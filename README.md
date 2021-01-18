@@ -27,6 +27,10 @@ with:
   trivy_image: busybox:1.33
 ```
 
+### `file_name`
+
+Optional. Name of the file to attach trivy CVE in the reviewdog report. By default `Dockerfile`
+
 ### `tool_name`
 
 Optional. Tool name to use for reviewdog reporter. Useful when running multiple

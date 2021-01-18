@@ -11,6 +11,9 @@ inputs:
   trivy_flags:
     description: 'Trivy flags. (trivy <trivy_flags>)'
     default: ''
+  file_name:
+    description: 'Reviewdog needs a file to attach any diagntostic'
+    default: 'Dockerfile'
   tool_name:
     description: 'Tool name to use for reviewdog reporter'
     default: 'trivy'
@@ -45,13 +48,14 @@ runs:
       shell: sh
       env:
         REVIEWDOG_VERSION: v0.11.0
-        TRIVY_VERSION: 1.15.0
+        TRIVY_VERSION: 0.15.0
         # INPUT_<VARIABLE_NAME> is not available in Composite run steps
         # https://github.community/t/input-variable-name-is-not-available-in-composite-run-steps/127611
         INPUT_GITHUB_TOKEN: ${{ inputs.github_token }}
         INPUT_EXCLUDE: ${{ inputs.exclude }}
         INPUT_TRIVY_FLAGS: ${{ inputs.trivy_flags }}
         INPUT_TRIVY_IMAGE: ${{ inputs.trivy_image }}
+        INPUT_FILE_NAME: ${{ inputs.file_name }}
         INPUT_TOOL_NAME: ${{ inputs.tool_name }}
         INPUT_LEVEL: ${{ inputs.level }}
         INPUT_REPORTER: ${{ inputs.reporter }}
