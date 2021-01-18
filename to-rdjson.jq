@@ -13,11 +13,18 @@
               else
                 "INFO"
               end),
-  diagnostics: .[].Vulnerabilities | map({
-    message: "\(.Title). \(.Description) | PkgName: \(.PkgName) | InstalledVersion: \(.InstalledVersion) | FixedVersion: \(.FixedVersion)",
+  diagnostics: .[].Vulnerabilities | group_by(.VulnerabilityID) | map({
+      VulnerabilityID: .[0].VulnerabilityID,
+      PkgName: map(.PkgName) | unique,
+      Title: map(.Title) | unique,
+      Description: map(.Description) | unique,
+      PrimaryURL: map(.PrimaryURL) | unique,
+      InstalledVersion: map(.InstalledVersion) | unique,
+      FixedVersion: map(.FixedVersion) | unique}) | map({
+    message: "\(.Title| join(",")). \(.Description| join(",") | .[0:100])... | PkgName: \(.PkgName| join(",")) | InstalledVersion: \(.InstalledVersion| join(",")) | FixedVersion: \(.FixedVersion| join(","))",
     code: {
       value: .VulnerabilityID,
-      url: .PrimaryURL,
+      url: .PrimaryURL | join(","),
     },
     location: {
       path: $file,
