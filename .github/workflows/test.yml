@@ -7,11 +7,11 @@ on:
 
 jobs:
   test-check:
-    name: runner / hadolint (github-check)
+    name: trivy + reviewdog
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: ./
         with:
-          reporter: github-check
-          trivy_image: debian:buster
+          trivy_image: debian:buster-20201209
+          trivy_flags: "--ignore-unfixed"

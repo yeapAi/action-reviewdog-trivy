@@ -4,14 +4,23 @@
     name: "trivy",
     url: "https://github.com/aquasecurity/trivy"
   },
+  "severity": (if .[].Vulnerabilities|map(.Severity)|unique|contains(["CRITICAL"]) then
+                "ERROR"
+              elif .[].Vulnerabilities|map(.Severity)|unique|contains(["HIGH"]) then
+                "ERROR"
+              elif .[].Vulnerabilities|map(.Severity)|unique|contains(["MEDIUM"]) then
+                "WARNING"
+              else
+                "INFO"
+              end),
   diagnostics: .[].Vulnerabilities | map({
-    message: "\(.Title). PkgName \(.PkgName). \(.Description) InstalledVersion: \(.InstalledVersion) FixedVersion: \(.FixedVersion)",
+    message: "\(.Title). \(.Description) | PkgName: \(.PkgName) | InstalledVersion: \(.InstalledVersion) | FixedVersion: \(.FixedVersion)",
     code: {
       value: .VulnerabilityID,
       url: .PrimaryURL,
-    } ,
+    },
     location: {
-      path: "Dockerfile",
+      path: $file,
       range: {
         start: {
           line: "1",
@@ -20,16 +29,11 @@
       }
     },
     severity: ( if .Severity == "CRITICAL" or .Severity == "HIGH" then
-                  1
-                elif .Severity == "MEDIUM" or .Severity == "LOW" then
-                  2
-                elif .Severity == "LOW" then
-                  3
+                  "ERROR"
+                elif .Severity == "MEDIUM" then
+                  "WARNING"
                 else
-                  null
-                end),
-    suggestion: {
-      text: "PkgName \(.PkgName) FixedVersion: \(.FixedVersion)"
-    }
+                  "INFO"
+                end)
   })
 }
