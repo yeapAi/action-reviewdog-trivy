@@ -60,6 +60,11 @@ Default is `false`.
 
 Optional. Additional reviewdog flags.
 
+### `debug`
+
+Optional. Debug mode
+Default is `false`.
+
 ## Example usage
 
 ```yml
