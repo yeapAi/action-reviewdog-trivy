@@ -36,9 +36,9 @@
         }
       }
     },
-    severity: ( if .Severity == "CRITICAL" or .Severity == "HIGH" then
+    severity: ( if .Severity[] == "CRITICAL" or .Severity[] == "HIGH" then
                   "ERROR"
-                elif .Severity == "MEDIUM" then
+                elif .Severity[] == "MEDIUM" then
                   "WARNING"
                 else
                   "INFO"
