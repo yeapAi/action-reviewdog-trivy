@@ -22,13 +22,16 @@ trivy ${INPUT_TRIVY_FLAGS} -q --format json -o ${GITHUB_ACTION_PATH}/output ${IN
 if [ "${INPUT_DEBUG}" = true ] ; then
     echo '[Debug] Output'
     cat ${GITHUB_ACTION_PATH}/output
-    echo '[Debug] jq'
-    cat ${GITHUB_ACTION_PATH}/output | jq --arg file ${INPUT_FILE_NAME} -f "${GITHUB_ACTION_PATH}/to-rdjson.jq" -c
 fi
 
 if [ $(cat output | jq 'if .[].Vulnerabilities then true else false end') = false ]; then
-    echo "No vulnerabiliy found"
+    echo 'No vulnerabiliy found'
 else
+    if [ "${INPUT_DEBUG}" = true ] ; then
+        echo '[Debug] jq'
+        cat ${GITHUB_ACTION_PATH}/output | jq --arg file ${INPUT_FILE_NAME} -f "${GITHUB_ACTION_PATH}/to-rdjson.jq" -c
+    fi
+
     cat ${GITHUB_ACTION_PATH}/output | \
     jq --arg file ${INPUT_FILE_NAME} -f "${GITHUB_ACTION_PATH}/to-rdjson.jq" -c | \
     reviewdog -f="rdjson" \
