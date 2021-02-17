@@ -7,7 +7,7 @@ on:
 
 jobs:
   test-check:
-    name: trivy + reviewdog
+    name: trivy + reviewdog - old debian
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -18,7 +18,7 @@ jobs:
           debug: "true"
           filter_mode: "nofilter"
   test-check-empty:
-    name: trivy + reviewdog
+    name: trivy + reviewdog - empty
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
