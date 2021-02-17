@@ -49,7 +49,7 @@ The default is `github-pr-check`.
 ### `filter_mode`
 
 Optional. Filtering mode for the reviewdog command [`added`, `diff_context`, `file`, `nofilter`].
-Default is `nofilter`.
+Default is `file`.
 
 ### `fail_on_error`
 

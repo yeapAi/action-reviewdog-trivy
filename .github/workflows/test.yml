@@ -13,6 +13,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: ./
         with:
-          trivy_image: debian:buster-20201209
+          trivy_image: "debian:buster-20201209"
           trivy_flags: "--ignore-unfixed"
           debug: "true"
+          filter_mode: "nofilter"
