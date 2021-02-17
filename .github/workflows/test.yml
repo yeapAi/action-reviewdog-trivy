@@ -16,4 +16,3 @@ jobs:
           trivy_image: debian:buster-20201209
           trivy_flags: "--ignore-unfixed"
           debug: "true"
-          level: "info"
