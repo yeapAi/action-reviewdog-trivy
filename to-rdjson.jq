@@ -21,7 +21,7 @@
       PrimaryURL: map(.PrimaryURL) | unique,
       InstalledVersion: map(.InstalledVersion) | unique,
       FixedVersion: map(.FixedVersion) | unique,
-      Severity: map(.Severity)}) | map({
+      Severity: map(.Severity) | unique}) | map({
     message: "\(.Title| join(",")). \(.Description| join(",") | .[0:100])... | PkgName: \(.PkgName| join(",")) | InstalledVersion: \(.InstalledVersion| join(",")) | FixedVersion: \(.FixedVersion| join(","))",
     code: {
       value: .VulnerabilityID,

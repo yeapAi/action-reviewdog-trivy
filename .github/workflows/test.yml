@@ -17,8 +17,18 @@ jobs:
           trivy_flags: "--ignore-unfixed"
           debug: "true"
           filter_mode: "nofilter"
+  test-check:
+    name: trivy + reviewdog - empty no debug
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./
+        with:
+          trivy_image: "debian"
+          trivy_flags: "--ignore-unfixed"
+          filter_mode: "nofilter"
   test-check-empty:
-    name: trivy + reviewdog - empty
+    name: trivy + reviewdog - empty debug
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
