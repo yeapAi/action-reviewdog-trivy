@@ -20,21 +20,26 @@ echo '::group:: Running trivy with reviewdog 🐶 ...'
 trivy ${INPUT_TRIVY_FLAGS} -q --format json -o ${GITHUB_ACTION_PATH}/output ${INPUT_TRIVY_IMAGE}
 
 if [ "${INPUT_DEBUG}" = true ] ; then
-    echo '::group:: Debug'
     echo '[Debug] Output'
     cat ${GITHUB_ACTION_PATH}/output
-    echo '[Debug] jq'
-    cat ${GITHUB_ACTION_PATH}/output | jq --arg file ${INPUT_FILE_NAME} -f "${GITHUB_ACTION_PATH}/to-rdjson.jq" -c
-    echo '::endgroup::'
 fi
 
-cat ${GITHUB_ACTION_PATH}/output | \
-jq --arg file ${INPUT_FILE_NAME} -f "${GITHUB_ACTION_PATH}/to-rdjson.jq" -c | \
-reviewdog -f="rdjson" \
-    -name="${INPUT_TOOL_NAME}" \
-    -reporter="${INPUT_REPORTER}" \
-    -filter-mode="${INPUT_FILTER_MODE}" \
-    -fail-on-error="${INPUT_FAIL_ON_ERROR}" \
-    -level="${INPUT_LEVEL}" \
-    ${INPUT_REVIEWDOG_FLAGS}
+if [ $(cat output | jq 'if .[].Vulnerabilities then true else false end') = false ]; then
+    echo 'No vulnerabiliy found'
+else
+    if [ "${INPUT_DEBUG}" = true ] ; then
+        echo '[Debug] jq'
+        cat ${GITHUB_ACTION_PATH}/output | jq --arg file ${INPUT_FILE_NAME} -f "${GITHUB_ACTION_PATH}/to-rdjson.jq" -c
+    fi
+
+    cat ${GITHUB_ACTION_PATH}/output | \
+    jq --arg file ${INPUT_FILE_NAME} -f "${GITHUB_ACTION_PATH}/to-rdjson.jq" -c | \
+    reviewdog -f="rdjson" \
+        -name="${INPUT_TOOL_NAME}" \
+        -reporter="${INPUT_REPORTER}" \
+        -filter-mode="${INPUT_FILTER_MODE}" \
+        -fail-on-error="${INPUT_FAIL_ON_ERROR}" \
+        -level="${INPUT_LEVEL}" \
+        ${INPUT_REVIEWDOG_FLAGS}
+fi
 echo '::endgroup::'

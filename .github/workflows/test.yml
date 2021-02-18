@@ -7,13 +7,24 @@ on:
 
 jobs:
   test-check:
-    name: trivy + reviewdog
+    name: trivy + reviewdog - old debian
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: ./
         with:
           trivy_image: "debian:buster-20201209"
+          trivy_flags: "--ignore-unfixed"
+          debug: "true"
+          filter_mode: "nofilter"
+  test-check-empty:
+    name: trivy + reviewdog - empty
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./
+        with:
+          trivy_image: "debian"
           trivy_flags: "--ignore-unfixed"
           debug: "true"
           filter_mode: "nofilter"
