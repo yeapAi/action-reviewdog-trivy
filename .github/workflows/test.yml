@@ -38,3 +38,15 @@ jobs:
           trivy_flags: "--ignore-unfixed"
           debug: "true"
           filter_mode: "nofilter"
+  test-check-review:
+    name: trivy + reviewdog - review
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./
+        with:
+          trivy_image: "debian"
+          trivy_flags: "--ignore-unfixed"
+          debug: "true"
+          filter_mode: "nofilter"
+          reporter: "github-pr-review"

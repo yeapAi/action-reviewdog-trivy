@@ -7,7 +7,7 @@
   "severity": (if .[].Vulnerabilities|map(.Severity)|unique|contains(["CRITICAL"]) then
                 "ERROR"
               elif .[].Vulnerabilities|map(.Severity)|unique|contains(["HIGH"]) then
-                "ERROR"
+                "WARNING"
               elif .[].Vulnerabilities|map(.Severity)|unique|contains(["MEDIUM"]) then
                 "WARNING"
               else
@@ -36,9 +36,9 @@
         }
       }
     },
-    severity: ( if .Severity[] == "CRITICAL" or .Severity[] == "HIGH" then
+    severity: ( if .Severity[] == "CRITICAL" then
                   "ERROR"
-                elif .Severity[] == "MEDIUM" then
+                elif .Severity[] == "MEDIUM" or .Severity[] == "HIGH" then
                   "WARNING"
                 else
                   "INFO"
