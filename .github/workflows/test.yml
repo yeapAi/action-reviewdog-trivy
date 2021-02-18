@@ -17,7 +17,7 @@ jobs:
           trivy_flags: "--ignore-unfixed"
           debug: "true"
           filter_mode: "nofilter"
-  test-check:
+  test-check-nodebug:
     name: trivy + reviewdog - empty no debug
     runs-on: ubuntu-latest
     steps:
