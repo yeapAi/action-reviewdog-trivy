@@ -17,6 +17,7 @@ jobs:
           trivy_flags: "--ignore-unfixed"
           debug: "true"
           filter_mode: "nofilter"
+          file_name: "test/Dockerfile"
   test-check-nodebug:
     name: trivy + reviewdog - empty no debug
     runs-on: ubuntu-latest
@@ -27,6 +28,7 @@ jobs:
           trivy_image: "debian"
           trivy_flags: "--ignore-unfixed"
           filter_mode: "nofilter"
+          file_name: "test/Dockerfile"
   test-check-empty:
     name: trivy + reviewdog - empty debug
     runs-on: ubuntu-latest
@@ -38,6 +40,7 @@ jobs:
           trivy_flags: "--ignore-unfixed"
           debug: "true"
           filter_mode: "nofilter"
+          file_name: "test/Dockerfile"
   test-check-review:
     name: trivy + reviewdog - review
     runs-on: ubuntu-latest
@@ -49,3 +52,4 @@ jobs:
           trivy_flags: "--ignore-unfixed"
           filter_mode: "nofilter"
           reporter: "github-pr-review"
+          file_name: "test/Dockerfile"
