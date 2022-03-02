@@ -4,16 +4,16 @@
     name: "trivy",
     url: "https://github.com/aquasecurity/trivy"
   },
-  "severity": (if .[].Vulnerabilities|map(.Severity)|unique|contains(["CRITICAL"]) then
+  "severity": (if .Results[0].Vulnerabilities|map(.Severity)|unique|contains(["CRITICAL"]) then
                 "ERROR"
-              elif .[].Vulnerabilities|map(.Severity)|unique|contains(["HIGH"]) then
+              elif .Results[0].Vulnerabilities|map(.Severity)|unique|contains(["HIGH"]) then
                 "WARNING"
-              elif .[].Vulnerabilities|map(.Severity)|unique|contains(["MEDIUM"]) then
+              elif .Results[0].Vulnerabilities|map(.Severity)|unique|contains(["MEDIUM"]) then
                 "WARNING"
               else
                 "INFO"
               end),
-  diagnostics: .[].Vulnerabilities | group_by(.VulnerabilityID) | map({
+  diagnostics: .Results[0].Vulnerabilities | group_by(.VulnerabilityID) | map({
       VulnerabilityID: .[0].VulnerabilityID,
       PkgName: map(.PkgName) | unique,
       Title: map(.Title) | unique,
