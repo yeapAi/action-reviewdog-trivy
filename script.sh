@@ -19,7 +19,7 @@ echo '::endgroup::'
 export REVIEWDOG_GITHUB_API_TOKEN="${INPUT_GITHUB_TOKEN}"
 
 echo '::group:: Running trivy with reviewdog 🐶 ...'
-trivy image ${INPUT_TRIVY_FLAGS} -q --format json -o ${GITHUB_ACTION_PATH}/output ${INPUT_TRIVY_IMAGE}
+trivy -q image ${INPUT_TRIVY_FLAGS} --format json -o ${GITHUB_ACTION_PATH}/output ${INPUT_TRIVY_IMAGE}
 
 if [ "${INPUT_DEBUG}" = true ]; then
     echo '[Debug] Output'
