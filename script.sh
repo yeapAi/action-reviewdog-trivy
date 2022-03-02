@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 cd "${GITHUB_WORKSPACE}" || exit
 
 TEMP_PATH="$(mktemp -d)"
@@ -17,14 +19,14 @@ echo '::endgroup::'
 export REVIEWDOG_GITHUB_API_TOKEN="${INPUT_GITHUB_TOKEN}"
 
 echo '::group:: Running trivy with reviewdog 🐶 ...'
-trivy ${INPUT_TRIVY_FLAGS} -q --format json -o ${GITHUB_ACTION_PATH}/output ${INPUT_TRIVY_IMAGE}
+trivy -q image ${INPUT_TRIVY_FLAGS} --format json -o ${GITHUB_ACTION_PATH}/output ${INPUT_TRIVY_IMAGE}
 
 if [ "${INPUT_DEBUG}" = true ]; then
     echo '[Debug] Output'
     cat ${GITHUB_ACTION_PATH}/output
 fi
 
-if [ $(cat $GITHUB_ACTION_PATH/output | jq 'if .[].Vulnerabilities then true else false end') = false ]; then
+if [ $(cat $GITHUB_ACTION_PATH/output | jq 'if .Results[0].Vulnerabilities then true else false end') = false ]; then
     echo 'No vulnerabiliy found'
 else
     if [ "${INPUT_DEBUG}" = true ] ; then
