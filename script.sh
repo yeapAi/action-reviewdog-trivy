@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -eo pipefail
+
 cd "${GITHUB_WORKSPACE}" || exit
 
 TEMP_PATH="$(mktemp -d)"
@@ -17,7 +19,7 @@ echo '::endgroup::'
 export REVIEWDOG_GITHUB_API_TOKEN="${INPUT_GITHUB_TOKEN}"
 
 echo '::group:: Running trivy with reviewdog 🐶 ...'
-trivy ${INPUT_TRIVY_FLAGS} -q --format json -o ${GITHUB_ACTION_PATH}/output ${INPUT_TRIVY_IMAGE}
+trivy image ${INPUT_TRIVY_FLAGS} -q --format json -o ${GITHUB_ACTION_PATH}/output ${INPUT_TRIVY_IMAGE}
 
 if [ "${INPUT_DEBUG}" = true ]; then
     echo '[Debug] Output'
