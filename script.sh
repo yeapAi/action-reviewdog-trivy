@@ -26,7 +26,7 @@ if [ "${INPUT_DEBUG}" = true ]; then
     cat ${GITHUB_ACTION_PATH}/output
 fi
 
-if [ $(cat $GITHUB_ACTION_PATH/output | jq 'if .[].Vulnerabilities then true else false end') = false ]; then
+if [ $(cat $GITHUB_ACTION_PATH/output | jq 'if .[].VulnerabilityID then true else false end') = false ]; then
     echo 'No vulnerabiliy found'
 else
     if [ "${INPUT_DEBUG}" = true ] ; then
